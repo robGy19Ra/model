@@ -2,7 +2,7 @@
 A model to enable communication between several agents to manipulate a randomly generated dataset.
 
 
-##Prerequisites
+## Prerequisites
 The model uses python and calls in several non-standard third party libraries, see below.
 the agentframework.py library supplied is required to run the model.
 other used python libraries inlcude:
