@@ -22,8 +22,8 @@ import bs4
 #run the model when GUI menu acted
 def run():
     num_of_agents = 10
-    num_of_iterations = 100
-    neighbourhood = 10
+    num_of_iterations = 10
+    neighbourhood = 20
     
     #get data from web address
     r = requests.get(
@@ -59,34 +59,22 @@ def run():
         
     carry_on = True
     
-    # Move the agents (uses functions in agentframework.py)
-    for j in range(num_of_iterations):
-        for i in range(num_of_agents):
-            agents[i].move()
-            agents[i].eat()
-            agents[i].share_with_neighbours(neighbourhood)    
-    
+
     #update agents locations
     def update(frame_number):
         
         fig.clear()  
         global carry_on
     
-        for i in range(num_of_agents):
-                if random.random() < 0.5:
-                    agents[i].y  = (agents[i].y + 1) % 99 
-                else:
-                    agents[i].y  = (agents[i].y - 1) % 99
-                
-                if random.random() < 0.5:
-                    agents[i].x  = (agents[i].x + 1) % 99 
-                else:
-                    agents[i].x  = (agents[i].x - 1) % 99 
-                    
-        #update matplotlib scatter with new locations
-        for i in range(num_of_agents):
-            matplotlib.pyplot.scatter(agents[i].y, agents[i].x)
-            matplotlib.pyplot.imshow(environment)
+        # Move the agents (uses functions in agentframework.py)
+        for j in range(num_of_iterations):
+            for i in range(num_of_agents):
+                agents[i].move()
+                agents[i].eat()
+                agents[i].share_with_neighbours(neighbourhood) 
+                #update matplotlib scatter with new locations
+                matplotlib.pyplot.scatter(agents[i].y, agents[i].x)
+                matplotlib.pyplot.imshow(environment)
 
     
     fig = matplotlib.pyplot.figure(figsize=(7, 7))
@@ -96,25 +84,27 @@ def run():
     matplotlib.pyplot.xlim(0, 99)
     matplotlib.pyplot.ylim(0, 99)
     for i in random.sample(range(num_of_agents),num_of_agents):
-        matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
+        matplotlib.pyplot.scatter(agents[i].y,agents[i].x)
     
+    #define stop function relative to number of iterations
     def gen_function(b = [0]):
         a = 0
         global carry_on 
         while (a < num_of_iterations):
             yield a			
             a = a + 1
-
+            
+    #enable matplotlib animation
     animation = matplotlib.animation.FuncAnimation(
         fig, update, frames=gen_function, repeat=False
         )
     canvas.show()
     
 #setup GUI
-fig1 = matplotlib.pyplot.figure(figsize=(7, 7))
+fig = matplotlib.pyplot.figure(figsize=(7, 7))
 root = tkinter.Tk()
 root.wm_title("Model")
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig1, master=root)
+canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
 canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
 menu_bar = tkinter.Menu(root)

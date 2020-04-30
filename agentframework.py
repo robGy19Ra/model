@@ -12,8 +12,8 @@ class Agent():
         self.agents = agents
         self.environment = environment
         self.store = 0
-        self.x = random.randint(0, 99)
         self.y = random.randint(0, 99)
+        self.x = random.randint(0, 99)
         print("dog, cat, fish, goat")
 
         
@@ -31,8 +31,9 @@ class Agent():
             
             
     def eat(self):
-        if self.environment[self.y][self.x] > 10:
-            self.environment[self.y][self.x] -= 10
+        #fed in xy not yx as matplotlib shows eat as mirror to point plots
+        if self.environment[self.x][self.y] > 10:
+            self.environment[self.x][self.y] -= 10
             self.store += 10
             
             
